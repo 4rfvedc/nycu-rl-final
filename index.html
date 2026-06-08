@@ -288,7 +288,6 @@
         <nav class="quick-nav" aria-label="Page navigation">
           <a href="#abstract">Abstract</a>
           <a href="#method">Method</a>
-          <a href="#heatmaps">Value Heatmaps</a>
           <a href="#experiments">Experiments</a>
           <a href="#results">Results</a>
           <a href="#training">Training Details</a>
@@ -394,13 +393,9 @@
         <p>
           This objective makes the value function more coherent as a learned navigation metric: the predicted cost from a state to a goal should be compatible with the cost of reaching an intermediate subgoal and then the final goal. This is especially useful in offline datasets where successful long trajectories may need to be assembled from shorter trajectory fragments.
         </p>
-      </div>
-    </section>
 
-    <section class="section paper-section is-alt" id="heatmaps">
-      <div class="container is-max-desktop content">
-        <h2 class="title is-3">Value Heatmaps</h2>
-        <h3>PointMaze Giant Stitch</h3>
+        <h3>Value Heatmaps</h3>
+        <h4>PointMaze Giant Stitch</h4>
         <p>
           The following heatmaps compare value estimates with and without the hierarchical value loss on PointMaze giant stitch.
         </p>
@@ -420,7 +415,7 @@
       </div>
     </section>
 
-    <section class="section paper-section" id="experiments">
+    <section class="section paper-section is-alt" id="experiments">
       <div class="container is-max-desktop content">
         <h2 class="title is-3">Experiments</h2>
         <h3>OGBench</h3>
@@ -477,7 +472,7 @@
               <tr><td></td><td></td><td>giant</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$14 \pm 3$</td><td>$16 \pm 3$</td><td>$65 \pm 5$</td><td>$\mathbf{77} \pm 4$</td><td class="ours">71</td></tr>
               <tr><td></td><td>stitch</td><td>medium</td><td>$45 \pm 11$</td><td>$44 \pm 6$</td><td>$29 \pm 6$</td><td>$59 \pm 7$</td><td>$53 \pm 6$</td><td>$\mathbf{94} \pm 1$</td><td>$93 \pm 1$</td><td class="ours">95</td></tr>
               <tr><td></td><td></td><td>large</td><td>$3 \pm 3$</td><td>$18 \pm 2$</td><td>$7 \pm 2$</td><td>$18 \pm 2$</td><td>$11 \pm 2$</td><td>$67 \pm 5$</td><td>$\mathbf{84} \pm 3$</td><td class="ours">92</td></tr>
-              <tr><td></td><td></td><td>giant</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$2 \pm 2$</td><td>$\mathbf{37} \pm 6$</td><td class="ours">72</td></tr>
+              <tr><td></td><td></td><td>giant</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$2 \pm 2$</td><td>$\mathbf{37} \pm 6$</td><td class="ours">82</td></tr>
               <tr><td></td><td>explore</td><td>medium</td><td>$2 \pm 1$</td><td>$19 \pm 3$</td><td>$13 \pm 2$</td><td>$1 \pm 1$</td><td>$3 \pm 2$</td><td>$37 \pm 10$</td><td>$\mathbf{94} \pm 3$</td><td class="ours">98</td></tr>
               <tr><td></td><td></td><td>large</td><td>$0 \pm 0$</td><td>$10 \pm 3$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$4 \pm 5$</td><td>$\mathbf{75} \pm 16$</td><td class="ours">99</td></tr>
               <tr><td>HumanoidMaze</td><td>navigate</td><td>medium</td><td>$8 \pm 2$</td><td>$24 \pm 2$</td><td>$27 \pm 2$</td><td>$21 \pm 8$</td><td>$60 \pm 4$</td><td>$89 \pm 2$</td><td>$\mathbf{94} \pm 1$</td><td></td></tr>
@@ -521,7 +516,7 @@
         <div class="table-wrap training-table">
           <table class="results-table">
             <tbody>
-              <tr><th>Learning rate</th><td>$3e^{-4}$</td></tr>
+              <tr><th>Learning rate</th><td>$3e-4$</td></tr>
               <tr><th>Optimizer</th><td>Adam</td></tr>
               <tr><th>Mini-batch size</th><td>1024</td></tr>
               <tr><th>Total gradient steps</th><td>500000</td></tr>
