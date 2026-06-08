@@ -337,18 +337,45 @@
         <p>
           The value function is trained with Implicit Q-Learning-style expectile regression. With a target value network $V^-$, the one-step target is
         </p>
-        <div class="equation-block">$$q = r(s,g) + \gamma m V^-(s',g),$$</div>
-        <p>where $m$ is the continuation mask. The expectile loss is</p>
+        <div class="equation-block">$$q = r(s,g) + \gamma V^-(s',g),$$</div>
+        <p>The expectile loss is</p>
         <div class="equation-block">$$\ell_\tau(u)=|\tau-\mathbb{1}[u&lt;0]|u^2,$$</div>
         <p>and the value loss minimizes the asymmetric squared error between $V(s,g)$ and the target $q$.</p>
+        <div class="equation-block">
+          $$\mathcal{L}_V
+          =
+          \mathbb{E}\left[
+          \ell_\tau\left(q - V(s,g)\right)
+          \right].$$
+        </div>
         <p>
-          Both policies are trained by advantage-weighted behavior cloning. For the low-level actor, the advantage measures whether the dataset action moves the agent closer to the local subgoal:
+          Both policies are trained by advantage-weighted behavior cloning. The low-level actor maximizes the likelihood of dataset actions, weighted by how much the transition improves progress toward the local subgoal:
         </p>
         <div class="equation-block">$$A_{\mathrm{low}} = V(s',h) - V(s,h).$$</div>
-        <p>For the high-level actor, the advantage measures whether a candidate subgoal improves the value toward the final goal:</p>
-        <div class="equation-block">$$A_{\mathrm{high}} = V(h,g) - V(s,g).$$</div>
+        <p>Its loss is</p>
+        <div class="equation-block">
+          $$\mathcal{L}_{\pi_{\mathrm{low}}}
+          =
+          -\mathbb{E}\left[
+          \exp(\alpha_{\mathrm{low}} A_{\mathrm{low}})
+          \log \pi_{\mathrm{low}}(a \mid s,h)
+          \right].$$
+        </div>
         <p>
-          The log-likelihood of dataset actions or subgoals is weighted by an exponential transform of these advantages, so behavior that improves goal reachability receives larger updates.
+          The high-level actor is trained similarly, but the supervised target is an intermediate subgoal. If $h$ is a candidate subgoal for reaching the final goal $g$, then
+        </p>
+        <div class="equation-block">$$A_{\mathrm{high}} = V(h,g) - V(s,g),$$</div>
+        <p>and the high-level actor loss is</p>
+        <div class="equation-block">
+          $$\mathcal{L}_{\pi_{\mathrm{high}}}
+          =
+          -\mathbb{E}\left[
+          \exp(\alpha_{\mathrm{high}} A_{\mathrm{high}})
+          \log \pi_{\mathrm{high}}(h \mid s,g)
+          \right].$$
+        </div>
+        <p>
+          These objectives preserve the behavior-cloning form, but give larger weight to actions and subgoals that are estimated to make more progress toward the requested goal.
         </p>
 
         <h3>Latent Observation and Goal Embeddings</h3>
@@ -373,25 +400,66 @@
         <p>
           The main additional training signal asks the value function to agree with decompositions through intermediate latent states. The standard value update learns $V(z,z_g)$ from one-step Bellman targets. The hierarchical value loss adds the constraint that reaching a faraway goal through an intermediate subgoal should have a value compatible with the two shorter segments.
         </p>
-        <p>For a batch of embeddings, we sample latent subgoals and latent final goals:</p>
-        <div class="equation-block">$$z_h \sim \mathrm{shuffle}(z), \qquad z_G \sim \mathrm{shuffle}(z).$$</div>
-        <p>The target value network estimates three quantities:</p>
-        <div class="equation-block">$$V^-(z,z_G), \qquad V^-(z,z_h), \qquad V^-(z_h,z_G).$$</div>
-        <p>
-          With $\gamma=1$, the value has a distance interpretation, so the composed target for going from $z$ to $z_G$ through $z_h$ is
-        </p>
-        <div class="equation-block">$$v_{h,\mathrm{tar}} = \min\left(V^-(z,z_h)\right) + \min\left(V^-(z_h,z_G)\right).$$</div>
-        <p>The target is clamped at zero because successful goal-reaching values should not become positive:</p>
-        <div class="equation-block">$$v_{h,\mathrm{tar}} = \min(v_{h,\mathrm{tar}}, 0).$$</div>
-        <p>The current value estimate $V(z,z_G)$ is trained with expectile regression toward this composed target:</p>
+        <p>For a batch of embeddings, we sample latent subgoals and latent final goals from the offline dataset:</p>
+        <div class="equation-block">$$z_h \sim \mathcal{D}, \qquad z_G \sim \mathcal{D}.$$</div>
+        <p>The hierarchical target composes the value from the current state to the sampled subgoal with the value from the sampled subgoal to the final goal:</p>
+        <div class="equation-block">$$v_{h,\mathrm{tar}} = V(z,z_h) + V(z_h,z_G).$$</div>
+        <p>We use a clipped expectile loss for this hierarchical target. Let the current long-horizon estimate be</p>
+        <div class="equation-block">$$v_h = V(z,z_G),$$</div>
+        <p>and define the hierarchical advantage</p>
+        <div class="equation-block">$$A_h = v_{h,\mathrm{tar}} - v_h.$$</div>
+        <p>Before applying expectile regression, the target is clipped relative to the current prediction:</p>
         <div class="equation-block">
-          $$\mathcal{L}_{V,h}
-          = \mathbb{E}\left[
-          \ell_{\tau_h}\left(v_{h,\mathrm{tar}} - V(z,z_G)\right)
+          $$\bar v_{h,\mathrm{tar}}
+          =
+          \mathrm{clip}\left(
+          v_{h,\mathrm{tar}},
+          v_h + c_{\min},
+          v_h + c_{\max}
+          \right).$$
+        </div>
+        <p>
+          In our experiments, this prevents overly large downward corrections while still allowing the value function to move upward when the composed path is better. The clipped expectile loss is
+        </p>
+        <div class="equation-block">
+          $$\mathcal{L}_{V_h}
+          =
+          \mathbb{E}\left[
+          \left|\tau_h-\mathbb{1}[A_h < 0]\right|
+          \left(\bar v_{h,\mathrm{tar}} - v_h\right)^2
           \right].$$
         </div>
         <p>
-          This objective makes the value function more coherent as a learned navigation metric: the predicted cost from a state to a goal should be compatible with the cost of reaching an intermediate subgoal and then the final goal. This is especially useful in offline datasets where successful long trajectories may need to be assembled from shorter trajectory fragments.
+          We further apply a mask $h_{\mathrm{mask}}$ so that the hierarchical loss is active only when both shorter segments are estimated to be better than the direct long-horizon estimate:
+        </p>
+        <div class="equation-block">
+          $$h_{\mathrm{mask}}
+          =
+          \mathbb{1}\left[V(z,z_h) > V(z,z_G)\right]
+          \cdot
+          \mathbb{1}\left[V(z_h,z_G) > V(z,z_G)\right].$$
+        </div>
+        <p>The final hierarchical value loss is therefore</p>
+        <div class="equation-block">
+          $$\mathcal{L}_{V_h}
+          =
+          \mathbb{E}\left[
+          h_{\mathrm{mask}}
+          \left|\tau_h-\mathbb{1}[A_h < 0]\right|
+          \left(\bar v_{h,\mathrm{tar}} - v_h\right)^2
+          \right].$$
+        </div>
+        <p>The full value objective combines the original goal-conditioned value loss with the hierarchical value loss:</p>
+        <div class="equation-block">
+          $$\mathcal{L}_{V,\mathrm{total}}
+          =
+          \mathcal{L}_{V}
+          +
+          \lambda_h \mathcal{L}_{V_h},$$
+        </div>
+        <p>where $\lambda_h$ controls the strength of the hierarchical consistency regularization.</p>
+        <p>
+          This objective makes the value function more coherent as a learned navigation metric: the predicted cost from a state to a goal should be compatible with the cost of reaching an intermediate subgoal and then the final goal. The mask focuses learning on useful decompositions, while the clipped target keeps the hierarchical update stable. This is especially useful in offline datasets where successful long trajectories may need to be assembled from shorter trajectory fragments.
         </p>
 
         <h3>Value Heatmaps</h3>
@@ -524,8 +592,11 @@
               <tr><th>Activation</th><td>GELU</td></tr>
               <tr><th>Target network smoothing coefficient</th><td>0.005</td></tr>
               <tr><th>Discount factor</th><td>1.0</td></tr>
-              <tr><th>Expectile</th><td>0.7</td></tr>
-              <tr><th>Hierarchical expectile</th><td>0.7</td></tr>
+              <tr><th>Expectile $\tau$</th><td>0.7</td></tr>
+              <tr><th>Hierarchical expectile $\tau_h$</th><td>0.7</td></tr>
+              <tr><th>Hierarchical clip lower bound $c_{\min}$</th><td>0 for navigate, -2 for stitch, -5 for explore</td></tr>
+              <tr><th>Hierarchical clip upper bound $c_{\max}$</th><td>$\infty$</td></tr>
+              <tr><th>Hierarchical value loss weight $\lambda_h$</th><td>0.2</td></tr>
               <tr><th>Value goal sampling ratio (current, trajectory, random)</th><td>(0.2, 0.5, 0.3)</td></tr>
               <tr><th>Actor goal sampling ratio (trajectory, random)</th><td>(0.5, 0.5) for navigate and stitch, (0.0, 1.0) for explore</td></tr>
               <tr><th>Subgoal horizon</th><td>30 steps for PointMaze and AntMaze, 100 steps for HumanoidMaze</td></tr>
