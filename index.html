@@ -397,6 +397,9 @@
         </p>
 
         <h3>Hierarchical Value Loss</h3>
+        <figure class="figure">
+          <img src="static/images/hierarchical_value_loss.png" alt="Hierarchical value loss composition through an intermediate subgoal" loading="lazy">
+        </figure>
         <p>
           The main additional training signal asks the value function to agree with decompositions through intermediate latent states. The standard value update learns $V(z,z_g)$ from one-step Bellman targets. The hierarchical value loss adds the constraint that reaching a faraway goal through an intermediate subgoal should have a value compatible with the two shorter segments.
         </p>

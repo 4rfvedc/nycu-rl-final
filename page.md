@@ -205,7 +205,7 @@ With the hierarchical value loss, the heatmap forms a smoother long-range gradie
 
 ## Experiments
 
-### OGBench
+**### OGBench
 
 OGBench is a benchmark suite for offline goal-conditioned RL. It provides fixed datasets and standardized evaluation tasks where the agent must reach commanded goals without online data collection.
 
@@ -227,10 +227,10 @@ The dataset has three styles that vary in how trajectories are distributed throu
 | Maze |  |  |  |  |  |  |  |  |  |      |
 | PointMaze | navigate | medium | $9 \pm 6$ | $63 \pm 6$ | $53 \pm 8$ | $82 \pm 5$ | $29 \pm 7$ | $79 \pm 5$ | $\mathbf{86} \pm 2$ | 98   |
 |  |  | large | $29 \pm 6$ | $45 \pm 5$ | $34 \pm 3$ | $\mathbf{86} \pm 9$ | $39 \pm 7$ | $58 \pm 5$ | $85 \pm 5$ | 98   |
-|  |  | giant | $1 \pm 2$ | $0 \pm 0$ | $0 \pm 0$ | $68 \pm 7$ | $27 \pm 10$ | $46 \pm 9$ | $\mathbf{72} \pm 6$ | 93   |
+|  |  | giant | $1 \pm 2$ | $0 \pm 0$ | $0 \pm 0$ | $68 \pm 7$ | $27 \pm 10$ | $46 \pm 9$ | $\mathbf{72} \pm 6$ | 96   |
 |  | stitch | medium | $23 \pm 18$ | $70 \pm 14$ | $21 \pm 9$ | $80 \pm 12$ | $0 \pm 1$ | $74 \pm 6$ | $\mathbf{75} \pm 5$ | 96   |
-|  |  | large | $7 \pm 5$ | $12 \pm 6$ | $31 \pm 2$ | $84 \pm 15$ | $0 \pm 0$ | $13 \pm 6$ | $\mathbf{66} \pm 8$ | 87   |
-|  |  | giant | $0 \pm 0$ | $0 \pm 0$ | $0 \pm 0$ | $50 \pm 8$ | $0 \pm 0$ | $0 \pm 0$ | $\mathbf{52} \pm 7$ | 100  |
+|  |  | large | $7 \pm 5$ | $12 \pm 6$ | $31 \pm 2$ | $84 \pm 15$ | $0 \pm 0$ | $13 \pm 6$ | $\mathbf{66} \pm 8$ | 98   |
+|  |  | giant | $0 \pm 0$ | $0 \pm 0$ | $0 \pm 0$ | $50 \pm 8$ | $0 \pm 0$ | $0 \pm 0$ | $\mathbf{52} \pm 7$ | 98   |
 | AntMaze | navigate | medium | $29 \pm 4$ | $72 \pm 8$ | $71 \pm 4$ | $88 \pm 3$ | $95 \pm 1$ | $\mathbf{96} \pm 1$ | $\mathbf{96} \pm 1$ | 96   |
 |  |  | large | $24 \pm 2$ | $16 \pm 5$ | $34 \pm 4$ | $75 \pm 6$ | $83 \pm 4$ | $91 \pm 2$ | $\mathbf{92} \pm 1$ | 93   |
 |  |  | giant | $0 \pm 0$ | $0 \pm 0$ | $0 \pm 0$ | $14 \pm 3$ | $16 \pm 3$ | $65 \pm 5$ | $\mathbf{77} \pm 4$ | 71   |
@@ -238,7 +238,7 @@ The dataset has three styles that vary in how trajectories are distributed throu
 |  |  | large | $3 \pm 3$ | $18 \pm 2$ | $7 \pm 2$ | $18 \pm 2$ | $11 \pm 2$ | $67 \pm 5$ | $\mathbf{84} \pm 3$ | 92   |
 |  |  | giant | $0 \pm 0$ | $0 \pm 0$ | $0 \pm 0$ | $0 \pm 0$ | $0 \pm 0$ | $2 \pm 2$ | $\mathbf{37} \pm 6$ | 82   |
 |  | explore | medium | $2 \pm 1$ | $19 \pm 3$ | $13 \pm 2$ | $1 \pm 1$ | $3 \pm 2$ | $37 \pm 10$ | $\mathbf{94} \pm 3$ | 98   |
-|  |  | large | $0 \pm 0$ | $10 \pm 3$ | $0 \pm 0$ | $0 \pm 0$ | $0 \pm 0$ | $4 \pm 5$ | $\mathbf{75} \pm 16$ | 99   |
+|  |  | large | $0 \pm 0$ | $10 \pm 3$ | $0 \pm 0$ | $0 \pm 0$ | $0 \pm 0$ | $4 \pm 5$ | $\mathbf{75} \pm 16$ | 99   |**
 | HumanoidMaze | navigate  | medium | $8 \pm 2$ | $24 \pm 2$ | $27 \pm 2$ | $21 \pm 8$ | $60 \pm 4$ | $89 \pm 2$ | $\mathbf{94} \pm 1$ |      |
 |  |  | large | $1 \pm 0$ | $2 \pm 1$ | $2 \pm 1$ | $5 \pm 1$ | $24 \pm 4$ | $49 \pm 4$ | $\mathbf{83} \pm 2$ |      |
 |  |  | giant | $0 \pm 0$ | $0 \pm 0$ | $0 \pm 0$ | $1 \pm 0$ | $3 \pm 2$ | $12 \pm 4$ | $\mathbf{92} \pm 1$ |      |
