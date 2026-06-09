@@ -531,10 +531,10 @@
             <tbody>
               <tr><td>PointMaze</td><td>navigate</td><td>medium</td><td>$9 \pm 6$</td><td>$63 \pm 6$</td><td>$53 \pm 8$</td><td>$82 \pm 5$</td><td>$29 \pm 7$</td><td>$79 \pm 5$</td><td>$\mathbf{86} \pm 2$</td><td class="ours">98</td></tr>
               <tr><td></td><td></td><td>large</td><td>$29 \pm 6$</td><td>$45 \pm 5$</td><td>$34 \pm 3$</td><td>$\mathbf{86} \pm 9$</td><td>$39 \pm 7$</td><td>$58 \pm 5$</td><td>$85 \pm 5$</td><td class="ours">98</td></tr>
-              <tr><td></td><td></td><td>giant</td><td>$1 \pm 2$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$68 \pm 7$</td><td>$27 \pm 10$</td><td>$46 \pm 9$</td><td>$\mathbf{72} \pm 6$</td><td class="ours">93</td></tr>
+              <tr><td></td><td></td><td>giant</td><td>$1 \pm 2$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$68 \pm 7$</td><td>$27 \pm 10$</td><td>$46 \pm 9$</td><td>$\mathbf{72} \pm 6$</td><td class="ours">96</td></tr>
               <tr><td></td><td>stitch</td><td>medium</td><td>$23 \pm 18$</td><td>$70 \pm 14$</td><td>$21 \pm 9$</td><td>$80 \pm 12$</td><td>$0 \pm 1$</td><td>$74 \pm 6$</td><td>$\mathbf{75} \pm 5$</td><td class="ours">96</td></tr>
-              <tr><td></td><td></td><td>large</td><td>$7 \pm 5$</td><td>$12 \pm 6$</td><td>$31 \pm 2$</td><td>$84 \pm 15$</td><td>$0 \pm 0$</td><td>$13 \pm 6$</td><td>$\mathbf{66} \pm 8$</td><td class="ours">87</td></tr>
-              <tr><td></td><td></td><td>giant</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$50 \pm 8$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$\mathbf{52} \pm 7$</td><td class="ours">100</td></tr>
+              <tr><td></td><td></td><td>large</td><td>$7 \pm 5$</td><td>$12 \pm 6$</td><td>$31 \pm 2$</td><td>$84 \pm 15$</td><td>$0 \pm 0$</td><td>$13 \pm 6$</td><td>$\mathbf{66} \pm 8$</td><td class="ours">98</td></tr>
+              <tr><td></td><td></td><td>giant</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$50 \pm 8$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$\mathbf{52} \pm 7$</td><td class="ours">98</td></tr>
               <tr><td>AntMaze</td><td>navigate</td><td>medium</td><td>$29 \pm 4$</td><td>$72 \pm 8$</td><td>$71 \pm 4$</td><td>$88 \pm 3$</td><td>$95 \pm 1$</td><td>$\mathbf{96} \pm 1$</td><td>$\mathbf{96} \pm 1$</td><td class="ours">96</td></tr>
               <tr><td></td><td></td><td>large</td><td>$24 \pm 2$</td><td>$16 \pm 5$</td><td>$34 \pm 4$</td><td>$75 \pm 6$</td><td>$83 \pm 4$</td><td>$91 \pm 2$</td><td>$\mathbf{92} \pm 1$</td><td class="ours">93</td></tr>
               <tr><td></td><td></td><td>giant</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$0 \pm 0$</td><td>$14 \pm 3$</td><td>$16 \pm 3$</td><td>$65 \pm 5$</td><td>$\mathbf{77} \pm 4$</td><td class="ours">71</td></tr>
@@ -554,7 +554,7 @@
         </div>
         <div class="container is-max-desktop">
           <p>
-            On PointMaze, the proposed method reaches 93-100 success across all reported medium, large, and giant tasks. The largest gains appear on the difficult stitch settings: original HIQL scores 0 on PointMaze giant stitch, while our method reaches 100. This supports the motivation of the hierarchical value loss: when successful behavior must be assembled from partial trajectories, a compositional value estimate can better evaluate useful intermediate subgoals.
+            On PointMaze, the proposed method reaches 96-100 success across all reported medium, large, and giant tasks. The largest gains appear on the difficult stitch settings: original HIQL scores 0 on PointMaze giant stitch, while our method reaches 98. This supports the motivation of the hierarchical value loss: when successful behavior must be assembled from partial trajectories, a compositional value estimate can better evaluate useful intermediate subgoals.
           </p>
           <p>
             On AntMaze, the method matches strong baselines on medium navigation and improves substantially on stitching and exploration. In particular, AntMaze giant stitch improves from 2 for HIQL and 37 for OTA to 72 for our method. AntMaze large explore also improves from 4 for HIQL and 75 for OTA to 99. These gains are strongest in settings where the agent must reason over long paths and intermediate waypoints rather than imitate a single complete demonstration.
